@@ -62,6 +62,16 @@ module GitCommands
     run "git branch -f #{to_branch} #{from_branch}"
     run "git checkout #{to_branch}"
   end
+
+  def self.push_and_merge(branch)
+    raise "You must specify a branch name." if branch.blank?
+    ensure_clean_working_directory!
+    run "git checkout #{branch}"
+    run "git push origin #{branch}"
+    run "git checkout master"
+    run "git merge #{branch}"
+    run "git push origin master"
+  end
  
   def self.pull_template
     ensure_clean_working_directory!
@@ -112,6 +122,18 @@ namespace :git do
     task :staging do
       branch = ENV['BRANCH'].blank? ? 'staging' : ENV['BRANCH']
       GitCommands.branch('origin/staging', branch)
+    end
+  end
+
+  namespace :merge do
+    desc "Push changes from local production branch to origin/production and merge changes with master"
+    task :production do
+      GitCommands.push_and_merge('production')
+    end
+
+    desc "Push changes from local staging branch to origin/staging and merge changes with master"
+    task :staging do
+      GitCommands.push_and_merge('staging')
     end
   end
 end
