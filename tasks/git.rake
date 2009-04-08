@@ -103,6 +103,7 @@ namespace :git do
   namespace :branch do
     desc "Branch origin/production into BRANCH locally."
     task :production do
+      branch = ENV['BRANCH'].blank? ? 'production' : ENV['BRANCH']
       GitCommands.branch_production(branch)
     end
   end
