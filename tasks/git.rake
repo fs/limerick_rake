@@ -54,12 +54,13 @@ module GitCommands
     push("origin/staging", "production")
   end
  
-  def self.branch_production(branch)
-    raise "You must specify a branch name." if branch.blank?
+  def self.branch(from_branch, to_branch)
+    raise "You must specify a from branch name." if from_branch.blank?
+    raise "You must specify a to branch name." if to_branch.blank?
     ensure_clean_working_directory!
     run "git fetch"
-    run "git branch -f #{branch} origin/production"
-    run "git checkout #{branch}"
+    run "git branch -f #{to_branch} #{from_branch}"
+    run "git checkout #{to_branch}"
   end
  
   def self.pull_template
@@ -104,7 +105,13 @@ namespace :git do
     desc "Branch origin/production into BRANCH locally."
     task :production do
       branch = ENV['BRANCH'].blank? ? 'production' : ENV['BRANCH']
-      GitCommands.branch_production(branch)
+      GitCommands.branch('origin/production', branch)
+    end
+
+    desc "Branch origin/staging into BRANCH locally."
+    task :staging do
+      branch = ENV['BRANCH'].blank? ? 'staging' : ENV['BRANCH']
+      GitCommands.branch('origin/staging', branch)
     end
   end
 end
