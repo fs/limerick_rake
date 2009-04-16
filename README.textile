@@ -24,6 +24,10 @@ h2. Git
 * rake git:diff:production - Show the difference between origin/staging and origin/production.
 * rake git:pull:suspenders - Pull updates from suspenders, the thoughtbot rails template.
 * rake git:branch:production - Branch origin/production into BRANCH locally.
+* rake git:branch:staging - Branch origin/staging into BRANCH locally.
+* rake git:merge:production - Push changes from local production branch to origin/production and merge changes with master
+* rake git:merge:staging - Push changes from local staging branch to origin/staging and merge changes with master
+
 
 h2. Backup
 
